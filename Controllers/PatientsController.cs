@@ -2,6 +2,7 @@
 using APAssistantAPI.Models.Patient;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
 using System.Security.Cryptography;
 
 namespace APAssistantAPI.Controllers
@@ -15,6 +16,29 @@ namespace APAssistantAPI.Controllers
         public PatientsController(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        // GET: api/Patients
+        [HttpGet]
+        public async Task<IEnumerable<Patient>> GetPatients()
+        {
+            return await _context.Patients.AsNoTracking().ToListAsync();
+        }
+
+        // GET: api/Patients/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Patient>> GetPatient(Guid id)
+        {
+            var patient = await _context.Patients.FindAsync(id);
+
+            if (patient == null)
+                return NotFound();
+
+            await _context.Entry(patient)
+                .Collection(p => p.Medicines)
+                .LoadAsync();
+
+            return patient;
         }
 
         // POST: api/Patients/Register
@@ -57,6 +81,42 @@ namespace APAssistantAPI.Controllers
                 .LoadAsync();
 
             return patient;
+        }
+
+        // PUT: api/Patients/5
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Patient>> PutPatient(Guid id, PatientUpdateRequest request)
+        {
+            var patient = await _context.Patients.FindAsync(id);
+
+            if (patient == null)
+                return NotFound();
+
+            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
+            patient.Name = request.Name;
+            patient.Email = request.Email;
+            patient.PasswordHash = passwordHash;
+            patient.PasswordSalt = passwordSalt;
+
+            await _context.SaveChangesAsync();
+
+            return patient;
+        }
+
+        // DELETE: api/Patients/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePatient(Guid id)
+        {
+            var patient = await _context.Patients.FindAsync(id);
+
+            if (patient == null)
+                return NotFound();
+
+            _context.Patients.Remove(patient);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
