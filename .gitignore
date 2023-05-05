@@ -1,4 +1,5 @@
 wwwroot/
+.config/
 
 # User-specific files
 *.rsuser
