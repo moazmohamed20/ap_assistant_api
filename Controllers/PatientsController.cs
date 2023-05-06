@@ -43,7 +43,7 @@ namespace APAssistantAPI.Controllers
 
         // POST: api/Patients/Register
         [HttpPost("[action]")]
-        public async Task<ActionResult<Patient>> Register(PatientRegisterRequest request)
+        public async Task<ActionResult<Patient>> Register(PatientCreateOrUpdateRequest request)
         {
             if (_context.Patients.Any(p => p.Email == request.Email))
                 return Conflict("Email address already used.");
@@ -85,7 +85,7 @@ namespace APAssistantAPI.Controllers
 
         // PUT: api/Patients/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<Patient>> PutPatient(Guid id, PatientUpdateRequest request)
+        public async Task<ActionResult<Patient>> PutPatient(Guid id, PatientCreateOrUpdateRequest request)
         {
             var patient = await _context.Patients.FindAsync(id);
 

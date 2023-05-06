@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace APAssistantAPI.Models.Patient
 {
-    public class PatientRegisterRequest
+    public class PatientCreateOrUpdateRequest
     {
         public string Name { get; set; }
 
