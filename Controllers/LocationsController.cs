@@ -40,9 +40,14 @@ namespace APAssistantAPI.Controllers
         public async Task<ActionResult<Location>> PostLocation(Location location)
         {
             if (await _context.Locations.AsNoTracking().AnyAsync(l => l.Id == location.Id))
+            {
+                location.Time = DateTime.UtcNow;
                 _context.Entry(location).State = EntityState.Modified;
+            }
             else
+            {
                 _context.Locations.Add(location);
+            }
 
             await _context.SaveChangesAsync();
 
