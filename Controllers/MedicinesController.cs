@@ -28,21 +28,18 @@ namespace APAssistantAPI.Controllers
             return medicine;
         }
 
-        // PUT: api/Medicines/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Medicine>> PutMedicine(Guid id, Medicine newMedicine)
+        // PUT: api/Medicines
+        [HttpPut]
+        public async Task<ActionResult<Medicine>> PutMedicine(Medicine medicine)
         {
-            var medicine = await _context.Medicines.FindAsync(id);
-
-            if (medicine == null)
+            if (!await _context.Medicines.AnyAsync(m => m.Id == medicine.Id))
                 return NotFound();
 
-            medicine = newMedicine;
+            _context.Entry(medicine).State = EntityState.Modified;
 
-            try { await _context.SaveChangesAsync(); }
-            catch (DbUpdateConcurrencyException) { throw; }
+            await _context.SaveChangesAsync();
 
-            return newMedicine;
+            return medicine;
         }
 
         // DELETE: api/Medicines/5
@@ -73,9 +70,6 @@ namespace APAssistantAPI.Controllers
 
             using (FileStream imgStream = new(imgFullPath, FileMode.Create))
                 await image.CopyToAsync(imgStream);
-
-            try { await _context.SaveChangesAsync(); }
-            catch (DbUpdateConcurrencyException) { throw; }
 
             return imgRelativePath;
         }
