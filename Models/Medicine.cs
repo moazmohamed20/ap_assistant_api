@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace APAssistantAPI.Models
 {
@@ -6,8 +6,8 @@ namespace APAssistantAPI.Models
     {
         public Guid Id { get; set; }
 
-        [ValidateNever]
-        public Guid PatientId { get; set; }
+        [Required]
+        public Guid? PatientId { get; set; }
 
         public string Name { get; set; }
 
