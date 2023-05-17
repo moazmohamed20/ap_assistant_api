@@ -13,7 +13,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 // Controllers
 builder.Services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
-// Seivces
+// Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

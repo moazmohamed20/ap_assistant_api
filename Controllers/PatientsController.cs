@@ -2,7 +2,6 @@
 using APAssistantAPI.Models.Patient;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
 using System.Security.Cryptography;
 
 namespace APAssistantAPI.Controllers
