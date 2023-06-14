@@ -17,5 +17,7 @@ namespace APAssistantAPI.Models.Patient
         public byte[] PasswordSalt { get; set; } = new byte[32];
 
         public ICollection<Medicine> Medicines { get; set; }
+        
+        public ICollection<Person> Family { get; set; }
     }
 }

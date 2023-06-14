@@ -37,6 +37,10 @@ namespace APAssistantAPI.Controllers
                 .Collection(p => p.Medicines)
                 .LoadAsync();
 
+            await _context.Entry(patient)
+                .Collection(p => p.Family)
+                .LoadAsync();
+
             return patient;
         }
 
@@ -77,6 +81,10 @@ namespace APAssistantAPI.Controllers
 
             await _context.Entry(patient)
                 .Collection(p => p.Medicines)
+                .LoadAsync();
+
+            await _context.Entry(patient)
+                .Collection(p => p.Family)
                 .LoadAsync();
 
             return patient;

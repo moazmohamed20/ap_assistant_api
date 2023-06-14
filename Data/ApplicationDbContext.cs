@@ -11,7 +11,16 @@ namespace APAssistantAPI.Data
 
         public DbSet<Location> Locations { get; set; }
 
+        public DbSet<Person> People { get; set; }
+
+        public DbSet<Face> Faces { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Person>().OwnsOne(p => p.Face);
+        }
     }
 }

@@ -4,6 +4,7 @@ using APAssistantAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APAssistantAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230614025137_CreatePeopleTable")]
+    partial class CreatePeopleTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +62,8 @@ namespace APAssistantAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PatientId")
+                    b.Property<Guid?>("PatientId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -97,15 +100,6 @@ namespace APAssistantAPI.Migrations
                     b.ToTable("Patients");
                 });
 
-            modelBuilder.Entity("APAssistantAPI.Models.Medicine", b =>
-                {
-                    b.HasOne("APAssistantAPI.Models.Patient.Patient", null)
-                        .WithMany("Medicines")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("APAssistantAPI.Models.Person", b =>
                 {
                     b.Property<Guid>("Id")
@@ -128,7 +122,16 @@ namespace APAssistantAPI.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("People", (string)null);
+                    b.ToTable("People");
+                });
+
+            modelBuilder.Entity("APAssistantAPI.Models.Medicine", b =>
+                {
+                    b.HasOne("APAssistantAPI.Models.Patient.Patient", null)
+                        .WithMany("Medicines")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("APAssistantAPI.Models.Person", b =>
@@ -139,7 +142,7 @@ namespace APAssistantAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("APAssistantAPI.Models.Person.Face#APAssistantAPI.Models.Face", "Face", b1 =>
+                    b.OwnsOne("APAssistantAPI.Models.Face", "Face", b1 =>
                         {
                             b1.Property<Guid>("PersonId")
                                 .HasColumnType("uniqueidentifier");
@@ -156,7 +159,7 @@ namespace APAssistantAPI.Migrations
 
                             b1.HasKey("PersonId");
 
-                            b1.ToTable("Faces", (string)null);
+                            b1.ToTable("Faces");
 
                             b1.WithOwner()
                                 .HasForeignKey("PersonId");

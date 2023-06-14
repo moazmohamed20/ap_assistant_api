@@ -61,7 +61,7 @@ namespace APAssistantAPI.Controllers
         }
 
         // PUT: api/Medicines/5/Image
-        [HttpPut("{id}/Image")]
+        [HttpPut("{id}/image")]
         public async Task<ActionResult<string>> PutImage(Guid id, IFormFile image)
         {
             string imgName = id + Path.GetExtension(image.FileName);
